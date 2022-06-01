@@ -1,10 +1,10 @@
-package com.project.gosdaq.dto;
+package com.project.gosdaq.dto.home;
 
 import lombok.Data;
 
 import java.util.ArrayList;
 
 @Data
-public class StockDTO {
+public class HomeRequestDTO {
     private ArrayList<String> tickers;
 }

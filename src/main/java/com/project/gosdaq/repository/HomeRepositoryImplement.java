@@ -1,29 +1,24 @@
 package com.project.gosdaq.repository;
 
 import com.project.gosdaq.common.NodeApi;
+import com.project.gosdaq.dto.home.HomeResponseDTO;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class HomeRepositoryImplement implements HomeRepository {
     @Override
-    public String getStockData(List<String> tickers) {
-        int cnt = 0;
+    public HomeResponseDTO getStockData(String ticker) {
 
-        for(String ticker : tickers){
-            NodeApi nodeApi = new NodeApi();
+        NodeApi nodeApi = new NodeApi();
+        HomeResponseDTO result = new HomeResponseDTO();
 
-            try {
-                String a = nodeApi.requstToNode(ticker);
-                System.out.println("AAAAAAAAAAAAAAAAA");
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                cnt++;
-            }
+        try {
+            result =  nodeApi.requestToNode("stocks/interest/", ticker);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = null;
         }
 
-        return ""+cnt;
+        return result;
     }
 }
