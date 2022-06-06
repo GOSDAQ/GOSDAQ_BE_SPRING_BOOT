@@ -1,7 +1,6 @@
 package com.project.gosdaq.controller;
 
 import com.project.gosdaq.dto.home.HomeRequestDTO;
-import com.project.gosdaq.dto.home.HomeResponseDTO;
 import com.project.gosdaq.service.home.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
