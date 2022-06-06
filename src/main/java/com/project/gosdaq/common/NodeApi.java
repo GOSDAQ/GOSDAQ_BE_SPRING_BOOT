@@ -5,7 +5,7 @@ import com.project.gosdaq.dto.common.StockInfoDTO;
 import org.springframework.web.client.RestTemplate;
 
 public class NodeApi {
-    String URL = "http://localhost:4000/stocks/";
+    String URL = "https://gosdaq-node.herokuapp.com/stocks/";
 
     public StockInfoDTO getStockInfo(String path) throws Exception{
         RestTemplate restTemplate = new RestTemplate();
