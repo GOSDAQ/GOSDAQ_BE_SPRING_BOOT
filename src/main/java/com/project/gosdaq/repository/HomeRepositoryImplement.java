@@ -5,7 +5,6 @@ import com.project.gosdaq.dto.common.HistoryDTO;
 import com.project.gosdaq.dto.common.StockInfoDTO;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public class HomeRepositoryImplement implements HomeRepository {
@@ -37,6 +36,20 @@ public class HomeRepositoryImplement implements HomeRepository {
             result = null;
         }
 
+        return result;
+    }
+
+    @Override
+    public double getExchangeData() {
+
+        NodeApi nodeApi = new NodeApi();
+        double result = 0.0;
+
+        try {
+            result =  nodeApi.getExchange("exchange/");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return result;
     }
 }
