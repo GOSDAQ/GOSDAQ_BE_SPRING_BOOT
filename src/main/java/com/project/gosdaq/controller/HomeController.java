@@ -1,6 +1,7 @@
 package com.project.gosdaq.controller;
 
-import com.project.gosdaq.dto.home.HomeRequestDTO;
+import com.project.gosdaq.dto.home.InterestRequestDTO;
+import com.project.gosdaq.dto.home.MyStockRequestDTO;
 import com.project.gosdaq.service.home.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +22,13 @@ public class HomeController {
     }
 
     @PostMapping("/interest")
-    public HashMap<String, Object> getInterest(@RequestBody HomeRequestDTO dto){
+    public HashMap<String, Object> getInterest(@RequestBody InterestRequestDTO dto){
         List<String> tickers = dto.getTickers();
         return homeService.getInterest(tickers);
+    }
+
+    @PostMapping("/test")
+    public HashMap<String, Object> getMyStockInfo(@RequestBody MyStockRequestDTO dto){
+        return homeService.getMyStock(dto);
     }
 }
