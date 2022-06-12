@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class NodeApi {
-//    String URL = "https://gosdaq-node.herokuapp.com/stocks/";
-    String URL = "http://localhost:4000/stocks/";
+    String URL = "https://gosdaq-node.herokuapp.com/stocks/";
+//    String URL = "http://localhost:4000/stocks/";
 
     public StockInfoDTO getStockInfo(String path) throws Exception{
         RestTemplate restTemplate = new RestTemplate();
