@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.ArrayList;
 
 @Data
-public class HomeRequestDTO {
+public class InterestRequestDTO {
     private ArrayList<String> tickers;
 }
