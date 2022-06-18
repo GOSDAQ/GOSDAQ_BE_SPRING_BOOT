@@ -29,7 +29,7 @@ public class HomeController {
         return homeService.getInterest(tickers);
     }
 
-    @PostMapping("/test")
+    @PostMapping("/have")
     public HashMap<String, Object> getMyStockInfo(@RequestBody MyStockRequestDTO dto){
         return homeService.getMyStock(dto);
     }
