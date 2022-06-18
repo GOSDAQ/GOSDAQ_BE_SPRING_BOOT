@@ -22,17 +22,21 @@ public class HomeServiceImplement implements HomeService{
     @Override
     public HashMap<String, Object> getInterest(List<String> tickers) {
         HashMap<String, Object> result = new HashMap<>();
+        List<HashMap<String, Object>> data = new ArrayList<>();
 
         for(String ticker : tickers){
             HashMap<String, Object> responseMap = new HashMap<>();
             StockInfoDTO stockInfoResponse = homeRepository.getStockData(ticker);
 
+            responseMap.put("id", ticker);
             responseMap.put("price", stockInfoResponse.getPrice());
             responseMap.put("rate", stockInfoResponse.getRate());
             responseMap.put("history", homeRepository.getHistoryData(ticker));
 
-            result.put(ticker, responseMap);
+            data.add(responseMap);
         }
+
+        result.put("data", data);
 
         return result;
     }
