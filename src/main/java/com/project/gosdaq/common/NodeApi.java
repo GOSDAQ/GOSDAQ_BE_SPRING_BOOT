@@ -26,6 +26,6 @@ public class NodeApi {
     public double getExchange(String path) throws Exception{
         RestTemplate restTemplate = new RestTemplate();
 
-        return (double) Objects.requireNonNull(restTemplate.getForObject(URL + path, HashMap.class)).get("exchange");
+        return (double) Objects.requireNonNull(restTemplate.getForObject(URL + path, HashMap.class)).get("data");
     }
 }
