@@ -2,9 +2,9 @@ package com.project.gosdaq.dto.home;
 
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class InterestRequestDTO {
-    private ArrayList<String> tickers;
+    private List<String> tickers;
 }
