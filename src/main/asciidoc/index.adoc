@@ -1,4 +1,4 @@
-= RESTful Notes API Guide
+= 고수닥 API Guide
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -7,6 +7,13 @@
 :sectnums:
 :sectlinks:
 :sectanchors:
+:basedir: {docdir}/../../../
+:snippets: {basedir}/target/generated-snippets
+:sources-root: {basedir}/src
+:resources: {sources-root}/main/resources
+:resources-test: {sources-root}/test/resources
+:java: {sources-root}/main/java
+:java-test: {sources-root}/test/java
 
 [[api]]
 == 관심종목
