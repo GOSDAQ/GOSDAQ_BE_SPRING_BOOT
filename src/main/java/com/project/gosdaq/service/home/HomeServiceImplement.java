@@ -4,6 +4,7 @@ import com.project.gosdaq.dto.common.HistoryDTO;
 import com.project.gosdaq.dto.common.StockInfoDTO;
 import com.project.gosdaq.dto.home.MyStockRequestDTO;
 import com.project.gosdaq.repository.HomeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -16,6 +17,7 @@ public class HomeServiceImplement implements HomeService{
 
     private final HomeRepository homeRepository;
 
+    @Autowired
     public HomeServiceImplement(HomeRepository homeRepository) {
         this.homeRepository = homeRepository;
     }
