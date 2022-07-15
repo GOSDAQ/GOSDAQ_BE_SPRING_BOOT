@@ -9,14 +9,14 @@ public interface ApiDocumentUtils {
 
     static OperationRequestPreprocessor getDocumentRequest() {
         return preprocessRequest(
-                modifyUris() // (1)
+                modifyUris()
                         .scheme("https")
                         .host("gosdaq-spring.herokuapp.com")
                         .removePort(),
-                prettyPrint()); // (2)
+                prettyPrint());
     }
 
     static OperationResponsePreprocessor getDocumentResponse() {
-        return preprocessResponse(prettyPrint()); // (3)
+        return preprocessResponse(prettyPrint());
     }
 }
