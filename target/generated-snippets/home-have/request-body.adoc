@@ -1,0 +1,10 @@
+[source,options="nowrap"]
+----
+{
+  "data" : [ {
+    "ticker" : "SBUX",
+    "avg" : 65.48,
+    "amt" : 4
+  } ]
+}
+----

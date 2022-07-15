@@ -1,0 +1,12 @@
+[source,bash]
+----
+$ echo '{
+  "data" : [ {
+    "ticker" : "SBUX",
+    "avg" : 65.48,
+    "amt" : 4
+  } ]
+}' | http POST 'https://gosdaq-spring.herokuapp.com/home/have' \
+    'Content-Type:application/json;charset=UTF-8' \
+    'Accept:application/json'
+----

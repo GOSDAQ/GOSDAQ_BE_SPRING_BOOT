@@ -1,0 +1,16 @@
+[source,http,options="nowrap"]
+----
+POST /home/have HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 86
+Host: gosdaq-spring.herokuapp.com
+
+{
+  "data" : [ {
+    "ticker" : "SBUX",
+    "avg" : 65.48,
+    "amt" : 4
+  } ]
+}
+----
