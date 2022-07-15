@@ -90,7 +90,8 @@ public class HomeServiceImplement implements HomeService{
 
             double income = Math.round((stockInfoResponse.getPrice() - stock.avg) * stock.amt * exchange);
 
-            stockData.put(stock.ticker, formatter.format(income));
+            stockData.put("ticker", stock.ticker);
+            stockData.put("revenue", formatter.format(income));
 
             data.add(stockData);
         }
