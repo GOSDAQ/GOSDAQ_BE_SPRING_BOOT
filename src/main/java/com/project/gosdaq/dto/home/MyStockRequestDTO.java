@@ -10,7 +10,7 @@ public class MyStockRequestDTO {
 
     public static class StockInfo {
         public String ticker;
-        public float avg;
+        public double avg;
         public int amt;
     }
 }

@@ -15,7 +15,7 @@
 :java: {sources-root}/main/java
 :java-test: {sources-root}/test/java
 
-[[api]]
+[[interest]]
 == 관심종목
 관심종목 관련 정보 API
 
@@ -23,3 +23,13 @@ include::{snippets}/home-interest/http-request.adoc[]
 include::{snippets}/home-interest/request-fields.adoc[]
 include::{snippets}/home-interest/http-response.adoc[]
 include::{snippets}/home-interest/response-fields.adoc[]
+
+
+[[have]]
+== 보유종목
+보유종목 관련 정보 API
+
+include::{snippets}/home-have/http-request.adoc[]
+include::{snippets}/home-have/request-fields.adoc[]
+include::{snippets}/home-have/http-response.adoc[]
+include::{snippets}/home-have/response-fields.adoc[]
