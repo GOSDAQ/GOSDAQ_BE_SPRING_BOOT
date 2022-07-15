@@ -44,7 +44,7 @@ public class HomeServiceImplement implements HomeService{
                 break;
             }
 
-            responseMap.put("ticker", ticker);
+            responseMap.put("id", ticker);
             responseMap.put("price", stockInfoResponse.getPrice());
             responseMap.put("rate", stockInfoResponse.getRate());
             responseMap.put("history", historyInfoResponse);
