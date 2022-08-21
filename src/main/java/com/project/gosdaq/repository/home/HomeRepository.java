@@ -1,4 +1,4 @@
-package com.project.gosdaq.repository;
+package com.project.gosdaq.repository.home;
 
 import com.project.gosdaq.dto.common.HistoryDTO;
 import com.project.gosdaq.dto.common.StockInfoDTO;

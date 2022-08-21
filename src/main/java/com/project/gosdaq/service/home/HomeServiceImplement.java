@@ -3,7 +3,7 @@ package com.project.gosdaq.service.home;
 import com.project.gosdaq.dto.common.HistoryDTO;
 import com.project.gosdaq.dto.common.StockInfoDTO;
 import com.project.gosdaq.dto.home.MyStockRequestDTO;
-import com.project.gosdaq.repository.HomeRepository;
+import com.project.gosdaq.repository.home.HomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
