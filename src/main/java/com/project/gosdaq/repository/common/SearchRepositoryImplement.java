@@ -11,8 +11,8 @@ public class SearchRepositoryImplement implements SearchRepository{
     @Autowired
     RestTemplate restTemplate;
 
-    //    String URL = "https://gosdaq-node.herokuapp.com/stocks/";
-    String URL = "http://localhost:4000/stocks/";
+        String URL = "https://gosdaq-node.herokuapp.com/stocks/";
+//    String URL = "http://localhost:4000/stocks/";
 
     @Override
     public Search.ResponseDTO getStockNameFromTicker(String ticker) {
