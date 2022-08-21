@@ -15,7 +15,10 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import static com.project.gosdaq.ApiDocumentUtils.getDocumentRequest;
 import static com.project.gosdaq.ApiDocumentUtils.getDocumentResponse;
@@ -74,7 +77,6 @@ public class HomeControllerTest {
         response.put("data", data);
 
         given(homeService.getInterest(dto.getTickers())).willReturn(response);
-        System.out.println(homeService.getInterest(dto.getTickers()));
 
         ResultActions result = this.mockMvc.perform(
                 post("/home/interest")
@@ -116,7 +118,7 @@ public class HomeControllerTest {
         MyStockRequestDTO.StockInfo reqData = new MyStockRequestDTO.StockInfo();
 
         reqData.ticker = "SBUX";
-        reqData.avg = (float) 65.48;
+        reqData.avg = 65.48;
         reqData.amt = 4;
 
         dto.setData(Collections.singletonList(reqData));
@@ -145,6 +147,7 @@ public class HomeControllerTest {
         );
 
         result.andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("home-have",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -155,11 +158,9 @@ public class HomeControllerTest {
                                 fieldWithPath("data[].amt").type(JsonFieldType.NUMBER).description("갯수")
                         ),
                         responseFields(
-                               fieldWithPath("isError").type(JsonFieldType.BOOLEAN).description("결과 성공 여부").optional(),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지").optional(),
-                                fieldWithPath("exchange").type(JsonFieldType.STRING).description("환율").optional(),
-                                fieldWithPath("data[].ticker").type(JsonFieldType.NUMBER).description("티커명").optional(),
-                                fieldWithPath("data[].revenue").type(JsonFieldType.NUMBER).description("수익(원화)").optional()
+                                fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("티커명").optional(),
+                                fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("티커명").optional(),
+                                fieldWithPath("data[].revenue").type(JsonFieldType.STRING).description("수익(원화)").optional()
                         )
                 ));
     }

@@ -33,3 +33,12 @@ include::{snippets}/home-have/http-request.adoc[]
 include::{snippets}/home-have/request-fields.adoc[]
 include::{snippets}/home-have/http-response.adoc[]
 include::{snippets}/home-have/response-fields.adoc[]
+
+
+[[search]]
+== 종목검색
+종목검색 관련 정보 API
+
+include::{snippets}/common-search/http-request.adoc[]
+include::{snippets}/common-search/http-response.adoc[]
+include::{snippets}/common-search/response-fields.adoc[]

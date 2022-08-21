@@ -3,7 +3,7 @@ package com.project.gosdaq.service.home;
 import com.project.gosdaq.dto.common.HistoryDTO;
 import com.project.gosdaq.dto.common.StockInfoDTO;
 import com.project.gosdaq.dto.home.MyStockRequestDTO;
-import com.project.gosdaq.repository.HomeRepository;
+import com.project.gosdaq.repository.home.HomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class HomeServiceImplement implements HomeService{
 
             if(stockInfoResponse==null || historyInfoResponse==null){
                 isError = true;
-                message = "[Spring] /home/have Fail, Check Ticker is Correct : " + ticker;
+                message = "[Spring] /home/interest Fail, Check Ticker is Correct : " + ticker;
                 break;
             }
 
@@ -84,7 +84,7 @@ public class HomeServiceImplement implements HomeService{
 
             if(stockInfoResponse==null){
                 isError = true;
-                message = "[Spring] /home/interest Fail, Check Ticker is Correct : " + stock.ticker;
+                message = "[Spring] /home/have Fail, Check Ticker is Correct : " + stock.ticker;
                 break;
             }
 

@@ -1,4 +1,4 @@
-package com.project.gosdaq.repository;
+package com.project.gosdaq.repository.home;
 
 import com.project.gosdaq.common.NodeApi;
 import com.project.gosdaq.dto.common.HistoryDTO;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class HomeRepositoryImplement implements HomeRepository {
+
     @Override
     public StockInfoDTO getStockData(String ticker) {
 
