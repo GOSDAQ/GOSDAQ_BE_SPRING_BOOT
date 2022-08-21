@@ -36,24 +36,4 @@ public class NodeApi {
 
         return (double) Objects.requireNonNull(restTemplate.getForObject(URL + path, HashMap.class)).get("data");
     }
-
-    public void getStockNameFromTicker(String path, String ticker){
-        Request request = new Request.Builder()
-                .url(URL + path + "/" + ticker)
-                .get()
-                .addHeader("Accept", "application/json")
-                .build();
-
-        try{
-            Response response = client.newCall(request).execute();
-
-            if(response.isSuccessful()){
-                ResponseBody body = response.body();
-                String result = body.string();
-                body.close();
-            }
-        } catch (Exception e){
-
-        }
-    }
 }

@@ -1,12 +1,9 @@
 package com.project.gosdaq.controller;
 
-import com.project.gosdaq.dto.common.SearchRequestDTO;
+import com.project.gosdaq.dto.common.Search;
 import com.project.gosdaq.service.common.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -22,7 +19,10 @@ public class CommonController {
     }
 
     @GetMapping("/search")
-    public HashMap<String, Object> getSearchTicker(@RequestParam SearchRequestDTO dto){
-        return searchService.getStockNameFromTicker(dto);
+    public Search.ResponseDTO getSearchTicker(@RequestParam("ticker") String ticker, @RequestParam(value = "region", required = false) String region){
+        if(region == null){
+            region = "";
+        }
+        return searchService.getStockNameFromTicker(ticker, region);
     }
 }

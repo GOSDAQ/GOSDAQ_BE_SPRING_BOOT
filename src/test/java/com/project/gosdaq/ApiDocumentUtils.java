@@ -10,7 +10,7 @@ public interface ApiDocumentUtils {
     static OperationRequestPreprocessor getDocumentRequest() {
         return preprocessRequest(
                 modifyUris()
-                        .scheme("https")
+                        .scheme("http")
                         .host("gosdaq-spring.herokuapp.com")
                         .removePort(),
                 prettyPrint());

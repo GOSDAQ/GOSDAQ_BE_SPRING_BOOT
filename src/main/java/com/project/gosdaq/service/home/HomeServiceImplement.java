@@ -40,7 +40,7 @@ public class HomeServiceImplement implements HomeService{
 
             if(stockInfoResponse==null || historyInfoResponse==null){
                 isError = true;
-                message = "[Spring] /home/have Fail, Check Ticker is Correct : " + ticker;
+                message = "[Spring] /home/interest Fail, Check Ticker is Correct : " + ticker;
                 break;
             }
 
@@ -84,7 +84,7 @@ public class HomeServiceImplement implements HomeService{
 
             if(stockInfoResponse==null){
                 isError = true;
-                message = "[Spring] /home/interest Fail, Check Ticker is Correct : " + stock.ticker;
+                message = "[Spring] /home/have Fail, Check Ticker is Correct : " + stock.ticker;
                 break;
             }
 
