@@ -1,4 +1,4 @@
-package com.project.gosdaq.repository.common;
+package com.project.gosdaq.repository.common.search;
 
 import com.project.gosdaq.dto.common.Search;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,13 @@ public class SearchRepositoryImplement implements SearchRepository{
 
     @Override
     public Search.ResponseDTO getStockNameFromTicker(String ticker) {
-        return restTemplate.getForObject(URL + "search/" + ticker, Search.ResponseDTO.class);
+        Search.ResponseDTO result = new Search.ResponseDTO();
+
+        try {
+            result = restTemplate.getForObject(URL + "search/" + ticker, Search.ResponseDTO.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
