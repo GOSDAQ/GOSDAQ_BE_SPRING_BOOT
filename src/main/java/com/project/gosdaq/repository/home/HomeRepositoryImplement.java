@@ -13,8 +13,8 @@ public class HomeRepositoryImplement implements HomeRepository {
     @Autowired
     RestTemplate restTemplate;
 
-//    String URL = "https://gosdaq-node.herokuapp.com/stocks/";
-    String URL = "http://localhost:4000/stocks/";
+    String URL = "https://gosdaq-node.herokuapp.com/stocks/";
+//    String URL = "http://localhost:4000/stocks/";
 
     @Override
     public Interest.NodeResponseDTO getInterestData(String ticker, int period) {
