@@ -1,9 +1,8 @@
 package com.project.gosdaq.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.gosdaq.dto.common.HistoryDTO;
-import com.project.gosdaq.dto.home.InterestRequestDTO;
-import com.project.gosdaq.dto.home.MyStockRequestDTO;
+import com.project.gosdaq.dto.home.Have;
+import com.project.gosdaq.dto.home.Interest;
 import com.project.gosdaq.service.home.HomeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static com.project.gosdaq.ApiDocumentUtils.getDocumentRequest;
 import static com.project.gosdaq.ApiDocumentUtils.getDocumentResponse;
@@ -30,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HomeController.class)
-@AutoConfigureRestDocs(uriScheme = "https", uriHost = "gosdaq-spring.herokuapp.com")
+@AutoConfigureRestDocs(uriScheme = "http", uriHost = "gosdaq-spring.herokuapp.com")
 public class HomeControllerTest {
 
     @Autowired
@@ -44,37 +40,33 @@ public class HomeControllerTest {
 
     @Test
     public void test_interest() throws Exception {
-        InterestRequestDTO dto = new InterestRequestDTO();
-        dto.setTickers(Collections.singletonList("SBUX"));
+        Interest.RequestDTO dto = new Interest.RequestDTO();
+        dto.setTickers(Collections.singletonList("KO"));
 
-        List<HashMap<String, Object>> data = new ArrayList<>();
-        HashMap<String, Object> dataMap = new HashMap<>();
-        HistoryDTO history = new HistoryDTO();
-        HashMap<String, Object> historyData = new HashMap<>();
+        Interest.ResponseDTO response = new Interest.ResponseDTO();
 
-        historyData.put("date", "2022-06-15T00:00:00.000Z");
-        historyData.put("open", 73.25);
-        historyData.put("high", 75.269997);
-        historyData.put("low", 73.110001);
-        historyData.put("close", 74.190002);
-        historyData.put("adjClose", 74.190002);
-        historyData.put("volume", 7682300);
+        List<Interest.ResponseDataDTO> responseDataList = new ArrayList<>();
+        Interest.ResponseDataDTO responseData = new Interest.ResponseDataDTO();
 
-        history.setData(Collections.singletonList(historyData));
-        history.setCnt(20);
+        List<Interest.HistoryDTO> historyDataList = new ArrayList<>();
+        Interest.HistoryDTO historyData = new Interest.HistoryDTO();
 
-        dataMap.put("ticker", "SBUX");
-        dataMap.put("price", 7009.3);
-        dataMap.put("rate", 1.41);
-        dataMap.put("history", history);
+        historyData.setDate("2022-07-27T00:00:00.000Z");
+        historyData.setClose(62.88f);
 
-        data.add(dataMap);
+        historyDataList.add(historyData);
 
-        HashMap<String, Object> response = new HashMap<>();
+        responseData.setTicker("KO");
+        responseData.setPrice(63.11f);
+        responseData.setRate(-2.41f);
+        responseData.setHistory(historyDataList);
+        responseData.setCnt(23);
 
-        response.put("isError", false);
-        response.put("message", "[Spring] /home/interest Success");
-        response.put("data", data);
+        responseDataList.add(responseData);
+
+        response.setCode(200);
+        response.setMsg("[Spring] /home/interest Success");
+        response.setData(responseDataList);
 
         given(homeService.getInterest(dto.getTickers())).willReturn(response);
 
@@ -93,51 +85,53 @@ public class HomeControllerTest {
                                 fieldWithPath("tickers").type(JsonFieldType.ARRAY).description("티커 리스트")
                         ),
                         responseFields(
-                                fieldWithPath("isError").type(JsonFieldType.BOOLEAN).description("결과 성공 여부"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                                fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("티커명"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과 코드 - 성공:200, 실패:500"),
+                                fieldWithPath("msg").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.ARRAY).description("관심종목 데이터"),
+                                fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("종목코드"),
                                 fieldWithPath("data[].rate").type(JsonFieldType.NUMBER).description("등락율"),
                                 fieldWithPath("data[].price").type(JsonFieldType.NUMBER).description("현재가"),
-                                fieldWithPath("data[].history").type(JsonFieldType.OBJECT).description("30일간 가격변화 리스트"),
-                                fieldWithPath("data[].history.data[].date").type(JsonFieldType.STRING).description("날짜"),
-                                fieldWithPath("data[].history.data[].open").type(JsonFieldType.NUMBER).description("시가"),
-                                fieldWithPath("data[].history.data[].high").type(JsonFieldType.NUMBER).description("고가"),
-                                fieldWithPath("data[].history.data[].low").type(JsonFieldType.NUMBER).description("저가"),
-                                fieldWithPath("data[].history.data[].close").type(JsonFieldType.NUMBER).description("종가"),
-                                fieldWithPath("data[].history.data[].adjClose").type(JsonFieldType.NUMBER).description("뭘까 이건"),
-                                fieldWithPath("data[].history.data[].volume").type(JsonFieldType.NUMBER).description("거래량"),
-                                fieldWithPath("data[].history.cnt").type(JsonFieldType.NUMBER).description("리스트 결과 갯수")
+                                fieldWithPath("data[].history").type(JsonFieldType.ARRAY).description("30일간 가격변화 리스트"),
+                                fieldWithPath("data[].history[].date").type(JsonFieldType.STRING).description("날짜"),
+                                fieldWithPath("data[].history[].close").type(JsonFieldType.NUMBER).description("종가"),
+                                fieldWithPath("data[].cnt").type(JsonFieldType.NUMBER).description("리스트 결과 갯수")
                         )
                 ));
     }
 
 
     @Test
-    public void test_have() throws Exception{
-        MyStockRequestDTO dto = new MyStockRequestDTO();
-        MyStockRequestDTO.StockInfo reqData = new MyStockRequestDTO.StockInfo();
+    public void test_have() throws Exception {
+        Have.RequestDTO dto = new Have.RequestDTO();
+        List<Have.RequestDataDTO> requestDataList = new ArrayList<>();
+        Have.RequestDataDTO requestData = new Have.RequestDataDTO();
 
-        reqData.ticker = "SBUX";
-        reqData.avg = 65.48;
-        reqData.amt = 4;
+        requestData.setTicker("SBUX");
+        requestData.setAvg(65.48f);
+        requestData.setAmt(4);
 
-        dto.setData(Collections.singletonList(reqData));
+        requestDataList.add(requestData);
 
-        HashMap<String, Object> response = new HashMap<>();
-        List<HashMap<String, Object>> data = new ArrayList<>();
-        HashMap<String, Object> dataMap = new HashMap<>();
+        dto.setData(requestDataList);
 
-        dataMap.put("ticker", "SBUX");
-        dataMap.put("revenue", "76,322");
+        Have.ResponseDTO response = new Have.ResponseDTO();
+        Have.ResponseDataDTO responseData = new Have.ResponseDataDTO();
+        List<Have.ResponseStockListDataDTO> stockList = new ArrayList<>();
+        Have.ResponseStockListDataDTO stockListData = new Have.ResponseStockListDataDTO();
 
-        data.add(dataMap);
+        stockListData.setTicker("SBUX");
+        stockListData.setRevenue("102,570");
 
-        response.put("isError", false);
-        response.put("message", "[Spring] /home/have Success");
-        response.put("exchange", 1319.55);
-        response.put("data", data);
+        stockList.add(stockListData);
 
-        given(homeService.getMyStock(dto)).willReturn(response);
+        responseData.setList(stockList);
+        responseData.setExchange(1341.13);
+
+        response.setData(responseData);
+        response.setCode(200);
+        response.setMsg("[Spring] /home/have Success");
+
+        given(homeService.getHave(dto)).willReturn(response);
 
         ResultActions result = this.mockMvc.perform(
                 post("/home/have")
@@ -147,21 +141,25 @@ public class HomeControllerTest {
         );
 
         result.andExpect(status().isOk())
-                .andDo(print())
                 .andDo(document("home-have",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("data").type(JsonFieldType.ARRAY).description("보유 종목 현황 리스트"),
-                                fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("티커명"),
+                                fieldWithPath("data").type(JsonFieldType.ARRAY).description("요청 데이터 리스트"),
+                                fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("종목코드"),
                                 fieldWithPath("data[].avg").type(JsonFieldType.NUMBER).description("평단가"),
-                                fieldWithPath("data[].amt").type(JsonFieldType.NUMBER).description("갯수")
+                                fieldWithPath("data[].amt").type(JsonFieldType.NUMBER).description("보유 개수")
                         ),
                         responseFields(
-                                fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("티커명").optional(),
-                                fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("티커명").optional(),
-                                fieldWithPath("data[].revenue").type(JsonFieldType.STRING).description("수익(원화)").optional()
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과 코드 - 성공:200, 실패:500"),
+                                fieldWithPath("msg").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("보유종목 데이터"),
+                                fieldWithPath("data.list").type(JsonFieldType.ARRAY).description("보유종목 결과 리스트"),
+                                fieldWithPath("data.list[].ticker").type(JsonFieldType.STRING).description("종목코드"),
+                                fieldWithPath("data.list[].revenue").type(JsonFieldType.STRING).description("원화 수익"),
+                                fieldWithPath("data.exchange").type(JsonFieldType.NUMBER).description("환율")
                         )
                 ));
     }
 }
+

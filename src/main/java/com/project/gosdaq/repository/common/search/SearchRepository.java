@@ -1,4 +1,4 @@
-package com.project.gosdaq.repository.common;
+package com.project.gosdaq.repository.common.search;
 
 import com.project.gosdaq.dto.common.Search;
 

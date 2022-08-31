@@ -1,107 +1,114 @@
 package com.project.gosdaq.service.home;
 
-import com.project.gosdaq.dto.common.HistoryDTO;
-import com.project.gosdaq.dto.common.StockInfoDTO;
-import com.project.gosdaq.dto.home.MyStockRequestDTO;
+import com.project.gosdaq.dto.home.Have;
+import com.project.gosdaq.dto.home.Interest;
+import com.project.gosdaq.repository.common.exchange.ExchangeRepository;
 import com.project.gosdaq.repository.home.HomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class HomeServiceImplement implements HomeService{
 
     private final HomeRepository homeRepository;
+    private final ExchangeRepository exchangeRepository;
 
     @Autowired
-    public HomeServiceImplement(HomeRepository homeRepository) {
+    public HomeServiceImplement(HomeRepository homeRepository, ExchangeRepository exchangeRepository) {
+
         this.homeRepository = homeRepository;
+        this.exchangeRepository = exchangeRepository;
     }
 
     @Override
-    public HashMap<String, Object> getInterest(List<String> tickers) {
+    public Interest.ResponseDTO getInterest(List<String> tickers) {
 
-        boolean isError = false;
-        String message = "[Spring] /home/interest Success";
+        Interest.ResponseDTO result = new Interest.ResponseDTO();
+        List<Interest.ResponseDataDTO> data = new ArrayList<>();
 
-        HashMap<String, Object> result = new HashMap<>();
-        List<HashMap<String, Object>> data = new ArrayList<>();
+        result.setCode(200);
+        result.setMsg("[Spring] /home/interest Success");
 
-        for(String ticker : tickers){
-            HashMap<String, Object> responseMap = new HashMap<>();
+        try {
+            for(String ticker : tickers){
+                Interest.ResponseDataDTO response = homeRepository.getInterestData(ticker, 30).getData();
 
+                if(response.getHistory().size() == 0){
+                    result.setCode(500);
+                    result.setMsg("[Spring] /home/interest Fail, Ckeck Node Error Log");
+                    break;
+                }
 
-            StockInfoDTO stockInfoResponse = homeRepository.getStockData(ticker);
-            HistoryDTO historyInfoResponse = homeRepository.getHistoryData(ticker);
-
-            if(stockInfoResponse==null || historyInfoResponse==null){
-                isError = true;
-                message = "[Spring] /home/interest Fail, Check Ticker is Correct : " + ticker;
-                break;
+                data.add(response);
             }
 
-            responseMap.put("id", ticker);
-            responseMap.put("price", stockInfoResponse.getPrice());
-            responseMap.put("rate", stockInfoResponse.getRate());
-            responseMap.put("history", historyInfoResponse);
-
-            data.add(responseMap);
-        }
-
-        result.put("isError", isError);
-        result.put("message", message);
-
-        if(!isError){
-            result.put("data", data);
+            result.setData(data);
+        } catch (Exception e) {
+            result.setCode(500);
+            result.setMsg("[Spring] /home/interest Fail, Ckeck Node Error Log");
+            e.printStackTrace();
         }
 
         return result;
     }
 
     @Override
-    public HashMap<String, Object> getMyStock(MyStockRequestDTO dto) {
+    public Have.ResponseDTO getHave(Have.RequestDTO dto) {
 
-        boolean isError = false;
-        String message = "[Spring] /home/have Success";
+        List<Have.RequestDataDTO> requestDataList = dto.getData();
 
-        List<MyStockRequestDTO.StockInfo> stockList = dto.getData();
+        Have.ResponseDTO result = new Have.ResponseDTO();
+        result.setCode(200);
+        result.setMsg("[Spring] /home/have Success");
+
+        Have.ResponseDataDTO data = new Have.ResponseDataDTO();
+        List<Have.ResponseStockListDataDTO> list = new ArrayList<>();
+
+        try {
+            double exchange = exchangeRepository.getExchangeRate().getData().getExchange();
+            data.setExchange(exchange);
+        } catch (Exception e){
+            result.setCode(500);
+            result.setMsg("[Spring] /home/have Fail - While Get Exchange Rate, Ckeck Spring Error Log");
+        }
+
         DecimalFormat formatter = new DecimalFormat("###,###");
-        double exchange = homeRepository.getExchangeData();
 
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("exchange", exchange);
+        if(data.getExchange() == 0){
+            return result;
+        }
 
-        List<HashMap<String, Object>> data = new ArrayList<>();
+        try {
+            for (Have.RequestDataDTO requestData : requestDataList) {
+                Have.NodeResponseDTO nodeResponse = homeRepository.getHaveData(requestData.getTicker());
 
-        for(MyStockRequestDTO.StockInfo stock : stockList){
-            HashMap<String, Object> stockData = new HashMap<>();
+                if (nodeResponse.getCode() == 500) {
+                    result.setCode(500);
+                    result.setMsg("[Spring] /home/have Fail - While Get Price & Rate, Ckeck Spring Error Log");
+                    break;
+                }
 
-            StockInfoDTO stockInfoResponse = homeRepository.getStockData(stock.ticker);
+                Have.NodeResponseListDataDTO nodeResponseData = nodeResponse.getData();
+                double revenue = Math.round((nodeResponseData.getPrice() - requestData.getAvg()) * requestData.getAmt() * data.getExchange());
 
-            if(stockInfoResponse==null){
-                isError = true;
-                message = "[Spring] /home/have Fail, Check Ticker is Correct : " + stock.ticker;
-                break;
+                Have.ResponseStockListDataDTO responseStockListDataDTO = new Have.ResponseStockListDataDTO();
+                responseStockListDataDTO.setTicker(requestData.getTicker());
+                responseStockListDataDTO.setRevenue(formatter.format(revenue));
+
+                list.add(responseStockListDataDTO);
             }
-
-            double income = Math.round((stockInfoResponse.getPrice() - stock.avg) * stock.amt * exchange);
-
-            stockData.put("ticker", stock.ticker);
-            stockData.put("revenue", formatter.format(income));
-
-            data.add(stockData);
+        } catch (Exception e) {
+            result.setCode(500);
+            result.setMsg("[Spring] /home/have Fail - While Get Price & Rate, Ckeck Spring Error Log");
+            e.printStackTrace();
         }
 
-        result.put("isError", isError);
-        result.put("message", message);
-
-        if(!isError){
-            result.put("data", data);
-        }
+        data.setList(list);
+        result.setData(data);
 
         return result;
     }
