@@ -11,8 +11,8 @@ public class ExchangeRepositoryImplement implements ExchangeRepository{
     @Autowired
     RestTemplate restTemplate;
 
-//    String URL = "https://gosdaq-node.herokuapp.com/common/";
-        String URL = "http://localhost:4000/common/";
+    String URL = "https://gosdaq-node.herokuapp.com/common/";
+//        String URL = "http://localhost:4000/common/";
 
     @Override
     public Exchange.ResponseDTO getExchangeRate() {
