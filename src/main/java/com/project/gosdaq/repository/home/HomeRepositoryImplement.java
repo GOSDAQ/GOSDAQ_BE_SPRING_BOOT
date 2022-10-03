@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 @Repository
 public class HomeRepositoryImplement implements HomeRepository {
 
-    @Value("${NODE_URL}")
+    @Value("${node.url}")
     String URL;
 
     @Autowired
