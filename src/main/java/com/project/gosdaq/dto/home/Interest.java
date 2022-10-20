@@ -20,6 +20,7 @@ public class Interest {
     @Data
     public static class ResponseDataDTO{
         private String ticker;
+        private String name;
         private float price;
         private float rate;
         private List<HistoryDTO> history;
