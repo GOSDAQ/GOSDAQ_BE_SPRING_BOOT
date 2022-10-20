@@ -21,6 +21,7 @@ public class Have {
     @Data
     public static class ResponseStockListDataDTO{
         private String ticker;
+        private String name;
         private String revenue;
     }
 

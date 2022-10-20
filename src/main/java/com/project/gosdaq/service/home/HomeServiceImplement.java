@@ -1,9 +1,11 @@
 package com.project.gosdaq.service.home;
 
+import com.project.gosdaq.dto.common.Search;
 import com.project.gosdaq.dto.home.Have;
 import com.project.gosdaq.dto.home.Interest;
 import com.project.gosdaq.repository.common.exchange.ExchangeRepository;
 import com.project.gosdaq.repository.home.HomeRepository;
+import com.project.gosdaq.service.common.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,14 @@ public class HomeServiceImplement implements HomeService{
     private final HomeRepository homeRepository;
     private final ExchangeRepository exchangeRepository;
 
+    private final SearchService searchService;
+
     @Autowired
-    public HomeServiceImplement(HomeRepository homeRepository, ExchangeRepository exchangeRepository) {
+    public HomeServiceImplement(HomeRepository homeRepository, ExchangeRepository exchangeRepository, SearchService searchService) {
 
         this.homeRepository = homeRepository;
         this.exchangeRepository = exchangeRepository;
+        this.searchService = searchService;
     }
 
     @Override
@@ -42,6 +47,9 @@ public class HomeServiceImplement implements HomeService{
                     result.setMsg("[Spring] /home/interest Fail, Ckeck Node Error Log");
                     break;
                 }
+
+                String name = searchService.getStockNameFromTicker(ticker, "").getData().getName();
+                response.setName(name);
 
                 data.add(response);
             }
@@ -98,6 +106,9 @@ public class HomeServiceImplement implements HomeService{
                 Have.ResponseStockListDataDTO responseStockListDataDTO = new Have.ResponseStockListDataDTO();
                 responseStockListDataDTO.setTicker(requestData.getTicker());
                 responseStockListDataDTO.setRevenue(formatter.format(revenue));
+
+                String name = searchService.getStockNameFromTicker(requestData.getTicker(), "").getData().getName();
+                responseStockListDataDTO.setName(name);
 
                 list.add(responseStockListDataDTO);
             }

@@ -56,6 +56,7 @@ public class HomeControllerTest {
         historyDataList.add(historyData);
 
         responseData.setTicker("KO");
+        responseData.setName("Coca-Cola Company (The)");
         responseData.setPrice(63.11f);
         responseData.setRate(-2.41f);
         responseData.setHistory(historyDataList);
@@ -88,6 +89,7 @@ public class HomeControllerTest {
                                 fieldWithPath("msg").type(JsonFieldType.STRING).description("결과 메시지"),
                                 fieldWithPath("data").type(JsonFieldType.ARRAY).description("관심종목 데이터"),
                                 fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("종목코드"),
+                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("종목명"),
                                 fieldWithPath("data[].rate").type(JsonFieldType.NUMBER).description("등락율"),
                                 fieldWithPath("data[].price").type(JsonFieldType.NUMBER).description("현재가"),
                                 fieldWithPath("data[].history").type(JsonFieldType.ARRAY).description("30일간 가격변화 리스트"),
@@ -119,6 +121,7 @@ public class HomeControllerTest {
         Have.ResponseStockListDataDTO stockListData = new Have.ResponseStockListDataDTO();
 
         stockListData.setTicker("SBUX");
+        stockListData.setName("Starbucks Corporation");
         stockListData.setRevenue("102,570");
 
         stockList.add(stockListData);
@@ -155,6 +158,7 @@ public class HomeControllerTest {
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("보유종목 데이터"),
                                 fieldWithPath("data.list").type(JsonFieldType.ARRAY).description("보유종목 결과 리스트"),
                                 fieldWithPath("data.list[].ticker").type(JsonFieldType.STRING).description("종목코드"),
+                                fieldWithPath("data.list[].name").type(JsonFieldType.STRING).description("종목명"),
                                 fieldWithPath("data.list[].revenue").type(JsonFieldType.STRING).description("원화 수익"),
                                 fieldWithPath("data.exchange").type(JsonFieldType.NUMBER).description("환율")
                         )
