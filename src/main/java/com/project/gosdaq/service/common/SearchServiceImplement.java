@@ -38,12 +38,12 @@ public class SearchServiceImplement implements SearchService{
                 Search.ResponseDTO response = searchRepository.getStockNameFromTicker(t);
 
                 int code = response.getCode();
+                result.setCode(code);
 
                 if(code == 200 && !(response.getData().getName().equals(""))){
                     result.setData(response.getData());
                     break;
                 } else if(code == 500) {
-                    result.setCode(response.getCode());
                     result.setMsg(response.getMsg());
                 }
             }
