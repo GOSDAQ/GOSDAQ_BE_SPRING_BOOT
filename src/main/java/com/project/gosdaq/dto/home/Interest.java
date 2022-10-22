@@ -18,7 +18,7 @@ public class Interest {
     }
 
     @Data
-    public static class ResponseDataDTO{
+    public static class ResponseStockListDataDTO{
         private String ticker;
         private String name;
         private float price;
@@ -28,16 +28,22 @@ public class Interest {
     }
 
     @Data
+    public static class ResponseDataDTO{
+        private List<Interest.ResponseStockListDataDTO> list;
+        private double exchange;
+    }
+
+    @Data
     public static class NodeResponseDTO{
         private int code;
         private String msg;
-        private ResponseDataDTO data;
+        private ResponseStockListDataDTO data;
     }
 
     @Data
     public static class ResponseDTO{
         private int code;
         private String msg;
-        private List<ResponseDataDTO> data;
+        private ResponseDataDTO data;
     }
 }
