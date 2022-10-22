@@ -39,12 +39,11 @@ public class SearchServiceImplement implements SearchService{
 
                 int code = response.getCode();
                 result.setCode(code);
+                result.setMsg(response.getMsg());
 
                 if(code == 200 && !(response.getData().getName().equals(""))){
                     result.setData(response.getData());
                     break;
-                } else if(code == 500) {
-                    result.setMsg(response.getMsg());
                 }
             }
         } catch (Exception e){
