@@ -43,9 +43,10 @@ public class HomeControllerTest {
         dto.setTickers(Collections.singletonList("KO"));
 
         Interest.ResponseDTO response = new Interest.ResponseDTO();
+        Interest.ResponseDataDTO data = new Interest.ResponseDataDTO();
 
-        List<Interest.ResponseDataDTO> responseDataList = new ArrayList<>();
-        Interest.ResponseDataDTO responseData = new Interest.ResponseDataDTO();
+        List<Interest.ResponseStockListDataDTO> responseDataList = new ArrayList<>();
+        Interest.ResponseStockListDataDTO stockListData = new Interest.ResponseStockListDataDTO();
 
         List<Interest.HistoryDTO> historyDataList = new ArrayList<>();
         Interest.HistoryDTO historyData = new Interest.HistoryDTO();
@@ -55,18 +56,21 @@ public class HomeControllerTest {
 
         historyDataList.add(historyData);
 
-        responseData.setTicker("KO");
-        responseData.setName("Coca-Cola Company (The)");
-        responseData.setPrice(63.11f);
-        responseData.setRate(-2.41f);
-        responseData.setHistory(historyDataList);
-        responseData.setCnt(23);
+        stockListData.setTicker("KO");
+        stockListData.setName("Coca-Cola Company (The)");
+        stockListData.setPrice(63.11f);
+        stockListData.setRate(-2.41f);
+        stockListData.setHistory(historyDataList);
+        stockListData.setCnt(23);
 
-        responseDataList.add(responseData);
+        responseDataList.add(stockListData);
+
+        data.setList(responseDataList);
+        data.setExchange(1428.3);
 
         response.setCode(200);
         response.setMsg("[Spring] /home/interest Success");
-        response.setData(responseDataList);
+        response.setData(data);
 
         given(homeService.getInterest(dto.getTickers())).willReturn(response);
 
@@ -87,15 +91,17 @@ public class HomeControllerTest {
                         responseFields(
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과 코드 - 성공:200, 실패:500"),
                                 fieldWithPath("msg").type(JsonFieldType.STRING).description("결과 메시지"),
-                                fieldWithPath("data").type(JsonFieldType.ARRAY).description("관심종목 데이터"),
-                                fieldWithPath("data[].ticker").type(JsonFieldType.STRING).description("종목코드"),
-                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("종목명"),
-                                fieldWithPath("data[].rate").type(JsonFieldType.NUMBER).description("등락율"),
-                                fieldWithPath("data[].price").type(JsonFieldType.NUMBER).description("현재가"),
-                                fieldWithPath("data[].history").type(JsonFieldType.ARRAY).description("30일간 가격변화 리스트"),
-                                fieldWithPath("data[].history[].date").type(JsonFieldType.STRING).description("날짜"),
-                                fieldWithPath("data[].history[].close").type(JsonFieldType.NUMBER).description("종가"),
-                                fieldWithPath("data[].cnt").type(JsonFieldType.NUMBER).description("리스트 결과 갯수")
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("관심종목 데이터"),
+                                fieldWithPath("data.exchange").type(JsonFieldType.NUMBER).description("환율"),
+                                fieldWithPath("data.list").type(JsonFieldType.ARRAY).description("관심종목 데이터 리스트"),
+                                fieldWithPath("data.list[].ticker").type(JsonFieldType.STRING).description("종목코드"),
+                                fieldWithPath("data.list[].name").type(JsonFieldType.STRING).description("종목명"),
+                                fieldWithPath("data.list[].rate").type(JsonFieldType.NUMBER).description("등락율"),
+                                fieldWithPath("data.list[].price").type(JsonFieldType.NUMBER).description("현재가"),
+                                fieldWithPath("data.list[].history").type(JsonFieldType.ARRAY).description("30일간 가격변화 리스트"),
+                                fieldWithPath("data.list[].history[].date").type(JsonFieldType.STRING).description("날짜"),
+                                fieldWithPath("data.list[].history[].close").type(JsonFieldType.NUMBER).description("종가"),
+                                fieldWithPath("data.list[].cnt").type(JsonFieldType.NUMBER).description("리스트 결과 갯수")
                         )
                 ));
     }

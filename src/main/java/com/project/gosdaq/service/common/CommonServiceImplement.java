@@ -44,13 +44,12 @@ public class CommonServiceImplement implements CommonService {
                 Search.ResponseDTO response = searchRepository.getStockNameFromTicker(t);
 
                 int code = response.getCode();
+                result.setCode(code);
+                result.setMsg(response.getMsg());
 
                 if(code == 200 && !(response.getData().getName().equals(""))){
                     result.setData(response.getData());
                     break;
-                } else if(code == 500) {
-                    result.setCode(response.getCode());
-                    result.setMsg(response.getMsg());
                 }
             }
         } catch (Exception e){

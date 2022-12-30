@@ -31,14 +31,15 @@ public class HomeServiceImplement implements HomeService{
     public Interest.ResponseDTO getInterest(List<String> tickers) {
 
         Interest.ResponseDTO result = new Interest.ResponseDTO();
-        List<Interest.ResponseDataDTO> data = new ArrayList<>();
+        Interest.ResponseDataDTO data = new Interest.ResponseDataDTO();
+        List<Interest.ResponseStockListDataDTO> stockListData = new ArrayList<>();
 
         result.setCode(200);
         result.setMsg("[Spring] /home/interest Success");
 
         try {
             for(String ticker : tickers){
-                Interest.ResponseDataDTO response = homeRepository.getInterestData(ticker, 30).getData();
+                Interest.ResponseStockListDataDTO response = homeRepository.getInterestData(ticker, 30).getData();
 
                 if(response.getHistory().size() == 0){
                     result.setCode(500);
@@ -49,8 +50,13 @@ public class HomeServiceImplement implements HomeService{
                 String name = commonService.getStockNameFromTicker(ticker, "").getData().getName();
                 response.setName(name);
 
-                data.add(response);
+                stockListData.add(response);
             }
+
+            double exchange = exchangeRepository.getExchangeRate().getData().getExchange();
+
+            data.setList(stockListData);
+            data.setExchange(exchange);
 
             result.setData(data);
         } catch (Exception e) {
