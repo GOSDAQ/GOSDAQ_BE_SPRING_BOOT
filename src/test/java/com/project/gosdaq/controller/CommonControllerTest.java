@@ -1,8 +1,9 @@
 package com.project.gosdaq.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.gosdaq.dto.common.Exchange;
 import com.project.gosdaq.dto.common.Search;
-import com.project.gosdaq.service.common.SearchService;
+import com.project.gosdaq.service.common.CommonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -30,7 +31,7 @@ public class CommonControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private SearchService searchService;
+    private CommonService commonService;
 
     @Test
     public void 종목검색_Test() throws Exception {
@@ -42,9 +43,9 @@ public class CommonControllerTest {
 
         response.setData(data);
         response.setCode(200);
-        response.setMsg("Search Ticker Success");
+        response.setMsg("[Spring] /common/search Success");
 
-        given(searchService.getStockNameFromTicker("081150", "KR")).willReturn(response);
+        given(commonService.getStockNameFromTicker("081150", "KR")).willReturn(response);
 
         ResultActions result = this.mockMvc.perform(
                 get("/common/search?ticker=081150&region=KR")
@@ -58,7 +59,36 @@ public class CommonControllerTest {
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과 코드"),
                                 fieldWithPath("msg").type(JsonFieldType.STRING).description("결과 메시지"),
                                 fieldWithPath("data.ticker").type(JsonFieldType.STRING).description("티커명"),
-                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("업체명")
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("종목명")
+                        )
+                ));
+    }
+
+    @Test
+    public void 환율조회_Test() throws Exception {
+        Exchange.ResponseDTO response = new Exchange.ResponseDTO();
+        Exchange.ExchangeRateDTO data = new Exchange.ExchangeRateDTO();
+
+        data.setExchange(1253.84);
+
+        response.setData(data);
+        response.setCode(200);
+        response.setMsg("[Spring] /common/exchange Success");
+
+        given(commonService.getExchange()).willReturn(response);
+
+        ResultActions result = this.mockMvc.perform(
+                get("/common/exchange")
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isOk())
+                .andDo(document("common-exchange",
+                        getDocumentResponse(),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("msg").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.exchange").type(JsonFieldType.NUMBER).description("환율")
                         )
                 ));
     }

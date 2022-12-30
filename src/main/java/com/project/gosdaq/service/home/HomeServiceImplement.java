@@ -1,11 +1,10 @@
 package com.project.gosdaq.service.home;
 
-import com.project.gosdaq.dto.common.Search;
 import com.project.gosdaq.dto.home.Have;
 import com.project.gosdaq.dto.home.Interest;
 import com.project.gosdaq.repository.common.exchange.ExchangeRepository;
 import com.project.gosdaq.repository.home.HomeRepository;
-import com.project.gosdaq.service.common.SearchService;
+import com.project.gosdaq.service.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +17,14 @@ public class HomeServiceImplement implements HomeService{
 
     private final HomeRepository homeRepository;
     private final ExchangeRepository exchangeRepository;
-
-    private final SearchService searchService;
+    private final CommonService commonService;
 
     @Autowired
-    public HomeServiceImplement(HomeRepository homeRepository, ExchangeRepository exchangeRepository, SearchService searchService) {
+    public HomeServiceImplement(HomeRepository homeRepository, ExchangeRepository exchangeRepository, CommonService commonService) {
 
         this.homeRepository = homeRepository;
         this.exchangeRepository = exchangeRepository;
-        this.searchService = searchService;
+        this.commonService = commonService;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class HomeServiceImplement implements HomeService{
                     break;
                 }
 
-                String name = searchService.getStockNameFromTicker(ticker, "").getData().getName();
+                String name = commonService.getStockNameFromTicker(ticker, "").getData().getName();
                 response.setName(name);
 
                 stockListData.add(response);
@@ -113,7 +111,7 @@ public class HomeServiceImplement implements HomeService{
                 responseStockListDataDTO.setTicker(requestData.getTicker());
                 responseStockListDataDTO.setRevenue(formatter.format(revenue));
 
-                String name = searchService.getStockNameFromTicker(requestData.getTicker(), "").getData().getName();
+                String name = commonService.getStockNameFromTicker(requestData.getTicker(), "").getData().getName();
                 responseStockListDataDTO.setName(name);
 
                 list.add(responseStockListDataDTO);

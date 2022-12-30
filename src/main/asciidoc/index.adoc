@@ -42,3 +42,12 @@ include::{snippets}/home-have/response-fields.adoc[]
 include::{snippets}/common-search/http-request.adoc[]
 include::{snippets}/common-search/http-response.adoc[]
 include::{snippets}/common-search/response-fields.adoc[]
+
+
+[[exchange]]
+== 환율조회
+환율조회 관련 정보 API
+
+include::{snippets}/common-exchange/http-request.adoc[]
+include::{snippets}/common-exchange/http-response.adoc[]
+include::{snippets}/common-exchange/response-fields.adoc[]

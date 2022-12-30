@@ -1,6 +1,9 @@
 package com.project.gosdaq.service.common;
 
+import com.project.gosdaq.dto.common.Exchange;
 import com.project.gosdaq.dto.common.Search;
+import com.project.gosdaq.dto.home.Have;
+import com.project.gosdaq.repository.common.exchange.ExchangeRepository;
 import com.project.gosdaq.repository.common.search.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,13 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SearchServiceImplement implements SearchService{
+public class CommonServiceImplement implements CommonService {
 
     private final SearchRepository searchRepository;
+    private final ExchangeRepository exchangeRepository;
 
     @Autowired
-    public SearchServiceImplement(SearchRepository searchRepository) {
+    public CommonServiceImplement(SearchRepository searchRepository, ExchangeRepository exchangeRepository) {
+
         this.searchRepository = searchRepository;
+        this.exchangeRepository = exchangeRepository;
     }
 
     @Override
@@ -49,6 +55,22 @@ public class SearchServiceImplement implements SearchService{
         } catch (Exception e){
             result.setCode(500);
             result.setMsg("[Spring] /common/search Fail, Ckeck Spring Error Log");
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Exchange.ResponseDTO getExchange() {
+        Exchange.ResponseDTO result = new Exchange.ResponseDTO();
+
+        try {
+            result = exchangeRepository.getExchangeRate();
+            result.setMsg("[Spring] /common/exchange Success");
+        } catch (Exception e){
+            result.setCode(500);
+            result.setMsg("[Spring] /common/exchange Fail, Ckeck Spring Error Log");
             e.printStackTrace();
         }
 
