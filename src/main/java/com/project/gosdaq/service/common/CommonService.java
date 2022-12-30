@@ -1,9 +1,9 @@
 package com.project.gosdaq.service.common;
 
+import com.project.gosdaq.dto.common.Exchange;
 import com.project.gosdaq.dto.common.Search;
 
-import java.util.HashMap;
-
-public interface SearchService {
+public interface CommonService {
     Search.ResponseDTO getStockNameFromTicker(String ticker, String region);
+    Exchange.ResponseDTO getExchange();
 }
